@@ -1,0 +1,78 @@
+@layer reset, components;
+
+@import "./styles/reset.css" layer(reset);
+@import "./styles/switch.css" layer(components);
+
+:where(html) {
+  background: color-mix(in srgb, black, white 10%);
+  font-size: 20px;
+}
+
+:where(body) {
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: 1fr max-content;
+  gap: 2rem;
+}
+
+:where(header) {
+  & > * {
+    padding-bottom: 0.25em;
+  }
+}
+
+:where(main) {
+  overflow-y: scroll;
+
+  height: 100dvh;
+  align-content: end;
+  scroll-snap-type: y proximity;
+
+  & > :where(section, header) {
+    padding: 1em;
+  }
+
+  & > :where(section) {
+    display: var(--display, none);
+    transition: transform ease 400ms;
+    border-bottom: 1px solid white;
+    gap: 2em;
+  }
+
+  & > section:has(input:checked) + section {
+    --display: grid;
+    transform: translateY(0%);
+    transform-origin: bottom;
+
+    @media (prefers-reduced-motion: no-preference) {
+      @starting-style {
+        transform: translateY(100%);
+      }
+    }
+  }
+
+  & > section:first-of-type {
+    --display: grid;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    scroll-snap-align: end;
+  }
+}
+
+:where(h1, h2, p, label, a) {
+  color: white;
+  max-width: 70ch;
+}
+
+:where(a) {
+  font-weight: bold;
+
+  &:focus {
+    outline: 2px solid oklch(60.31% 0.22 257.866);
+    outline-offset: 2px;
+  }
+}
